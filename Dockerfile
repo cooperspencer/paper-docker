@@ -1,5 +1,5 @@
 
-FROM adoptopenjdk/openjdk16:latest AS build
+FROM openjdk:16-slim AS build
 
 ARG paperspigot_ci_url=https://papermc.io/api/v1/paper/1.17.1/latest/download
 ENV PAPERSPIGOT_CI_URL=$paperspigot_ci_url
@@ -10,12 +10,12 @@ WORKDIR /opt/minecraft
 ADD ${PAPERSPIGOT_CI_URL} paperclip.jar
 
 # Run paperclip and obtain patched jar
-RUN /opt/java/openjdk/bin/java -jar /opt/minecraft/paperclip.jar; exit 0
+RUN /usr/local/openjdk-16/bin/java -jar /opt/minecraft/paperclip.jar; exit 0
 
 # Copy built jar
 RUN mv /opt/minecraft/cache/patched*.jar paper.jar
 
-FROM adoptopenjdk/openjdk16:latest AS runtime
+FROM openjdk:16-slim AS runtime
 
 # Working directory
 WORKDIR /data
@@ -46,4 +46,4 @@ ENV JAVAFLAGS=$java_flags
 WORKDIR /data
 
 # Entrypoint with java optimisations
-ENTRYPOINT /opt/java/openjdk/bin/java -jar -Xms$MEMORYSIZE -Xmx$MEMORYSIZE $JAVAFLAGS /opt/minecraft/paper.jar --nojline nogui
+ENTRYPOINT /usr/local/openjdk-16/bin/java -jar -Xms$MEMORYSIZE -Xmx$MEMORYSIZE $JAVAFLAGS /opt/minecraft/paper.jar --nojline nogui
