@@ -21,4 +21,3 @@ docker attach mc
 
 ## Availability
 This container will be available for AMD64 and ARM64
-
