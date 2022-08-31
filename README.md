@@ -13,7 +13,7 @@ docker run \
   -e MEMORYSIZE='1G' \
   -v /path/to/volume:/data:rw \
   -p 25565:25565 \
--i buddyspencer/papermc:latest
+  -i buddyspencer/papermc:latest
 ```
 ```sh
 docker attach mc
@@ -21,3 +21,4 @@ docker attach mc
 
 ## Availability
 This container will be available for AMD64 and ARM64
+
