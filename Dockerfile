@@ -1,8 +1,7 @@
+FROM openjdk:17-slim AS build
 
-FROM openjdk:16-slim AS build
-
-ARG paperspigot_ci_url=https://papermc.io/api/v1/paper/1.17.1/latest/download
-ENV PAPERSPIGOT_CI_URL=$paperspigot_ci_url
+ENV PAPERSPIGOT_CI_URL=https://papermc.io/api/v2/projects/paper/versions/1.19.2/builds/135/downloads/paper-1.19.2-135.jar
+ENV RCON_URL=https://github.com/itzg/rcon-cli/releases/download/1.6.0/rcon-cli_1.6.0_linux_386.tar.gz
 
 WORKDIR /opt/minecraft
 
@@ -10,23 +9,21 @@ WORKDIR /opt/minecraft
 ADD ${PAPERSPIGOT_CI_URL} paperclip.jar
 
 # Run paperclip and obtain patched jar
-RUN /usr/local/openjdk-16/bin/java -jar /opt/minecraft/paperclip.jar; exit 0
+RUN /usr/local/openjdk-17/bin/java -jar /opt/minecraft/paperclip.jar; exit 0
 
-# Copy built jar
-RUN mv /opt/minecraft/cache/patched*.jar paper.jar
+# Install and run rcon
+ADD ${RCON_URL} /tmp/rcon-cli.tgz
+RUN tar -x -C /usr/local/bin -f /tmp/rcon-cli.tgz rcon-cli && \
+  rm /tmp/rcon-cli.tgz
 
-FROM openjdk:16-slim AS runtime
+FROM openjdk:17-slim AS runtime
 
 # Working directory
 WORKDIR /data
 
 # Obtain runable jar from build stage
-COPY --from=build /opt/minecraft/paper.jar /opt/minecraft/paper.jar
-
-# Install and run rcon
-ADD https://github.com/itzg/rcon-cli/releases/download/1.4.8/rcon-cli_1.4.8_linux_amd64.tar.gz /tmp/rcon-cli.tgz
-RUN tar -x -C /usr/local/bin -f /tmp/rcon-cli.tgz rcon-cli && \
-  rm /tmp/rcon-cli.tgz
+COPY --from=build /opt/minecraft/paperclip.jar /opt/minecraft/paper.jar
+COPY --from=build /usr/local/bin/rcon-cli /usr/local/bin/rcon-cli
 
 # Volumes for the external data (Server, World, Config...)
 VOLUME "/data"
@@ -46,4 +43,4 @@ ENV JAVAFLAGS=$java_flags
 WORKDIR /data
 
 # Entrypoint with java optimisations
-ENTRYPOINT /usr/local/openjdk-16/bin/java -jar -Xms$MEMORYSIZE -Xmx$MEMORYSIZE $JAVAFLAGS /opt/minecraft/paper.jar --nojline nogui
+ENTRYPOINT /usr/local/openjdk-17/bin/java -jar -Xms$MEMORYSIZE -Xmx$MEMORYSIZE $JAVAFLAGS /opt/minecraft/paper.jar --nojline nogui
