@@ -1,6 +1,6 @@
 FROM openjdk:17-slim AS build
 
-ENV PAPERSPIGOT_CI_URL=https://papermc.io/api/v2/projects/paper/versions/1.19.2/builds/236/downloads/paper-1.19.2-236.jar
+ENV PAPERSPIGOT_CI_URL=https://papermc.io/api/v2/projects/paper/versions/1.19.2/builds/237/downloads/paper-1.19.2-237.jar
 ENV RCON_URL=https://github.com/itzg/rcon-cli/releases/download/1.6.0/rcon-cli_1.6.0_linux_arm64.tar.gz
 
 WORKDIR /opt/minecraft
