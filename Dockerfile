@@ -1,15 +1,14 @@
 FROM openjdk:17-slim AS build
 
+ARG TARGETARCH
+
 ENV PAPERSPIGOT_CI_URL=https://papermc.io/api/v2/projects/paper/versions/1.19.3/builds/386/downloads/paper-1.19.3-386.jar
-ENV RCON_URL=https://github.com/itzg/rcon-cli/releases/download/1.6.1/rcon-cli_1.6.1_linux_arm64.tar.gz
+ENV RCON_URL=https://github.com/itzg/rcon-cli/releases/download/1.6.1/rcon-cli_1.6.1_linux_${TARGETARCH}.tar.gz
 
 WORKDIR /opt/minecraft
 
 # Download paperclip
 ADD ${PAPERSPIGOT_CI_URL} paperclip.jar
-
-# Run paperclip and obtain patched jar
-RUN /usr/local/openjdk-17/bin/java -jar /opt/minecraft/paperclip.jar; exit 0
 
 # Install and run rcon
 ADD ${RCON_URL} /tmp/rcon-cli.tgz
