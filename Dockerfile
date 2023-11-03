@@ -2,7 +2,7 @@ FROM openjdk:17-slim AS build
 
 ARG TARGETARCH
 
-ENV PAPERSPIGOT_CI_URL=https://papermc.io/api/v2/projects/paper/versions/1.20.2/builds/261/downloads/paper-1.20.2-261.jar
+ENV PAPERSPIGOT_CI_URL=https://papermc.io/api/v2/projects/paper/versions/1.20.2/builds/262/downloads/paper-1.20.2-262.jar
 ENV RCON_URL=https://github.com/itzg/rcon-cli/releases/download/1.6.2/rcon-cli_1.6.2_linux_${TARGETARCH}.tar.gz
 
 WORKDIR /opt/minecraft
