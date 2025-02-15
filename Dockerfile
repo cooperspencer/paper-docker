@@ -2,7 +2,7 @@ FROM eclipse-temurin:21-jre-alpine AS build
 
 ARG TARGETARCH
 
-ENV PAPER_CI_URL=https://api.papermc.io/v2/projects/paper/versions/1.21.4/builds/150/downloads/paper-1.21.4-150.jar
+ENV PAPER_CI_URL=https://api.papermc.io/v2/projects/paper/versions/1.21.4/builds/151/downloads/paper-1.21.4-151.jar
 ENV RCON_URL=https://github.com/itzg/rcon-cli/releases/download/1.6.11/rcon-cli_1.6.11_linux_${TARGETARCH}.tar.gz
 
 WORKDIR /opt/minecraft
