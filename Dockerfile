@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jre-alpine AS build
+FROM eclipse-temurin:25-jre-alpine AS build
 
 ARG TARGETARCH
 
